@@ -3,138 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cuestionario MRU — Física</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Cuestionario Avanzado MRU — Física</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0d0f1a;
-  --surface:#151824;
-  --card:#1c2033;
-  --accent:#7c6fff;
-  --accent2:#a78bfa;
-  --green:#22c98e;
-  --red:#f06080;
-  --text:#e8eaf6;
-  --muted:#8890b0;
-  --border:#2a2f4a;
-  --mono:'JetBrains Mono',monospace;
-  --sans:'Sora',sans-serif;
+:root {
+  --bg: #050505;
+  --bg-gradient: radial-gradient(circle at top right, #201a36, #050505 50%);
+  --surface: rgba(24, 24, 27, 0.65);
+  --surface-hover: rgba(39, 39, 42, 0.8);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --accent: #8b5cf6;
+  --accent-glow: rgba(139, 92, 246, 0.4);
+  --green: #10b981;
+  --green-glow: rgba(16, 185, 129, 0.2);
+  --red: #ef4444;
+  --red-glow: rgba(239, 68, 68, 0.2);
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --mono: 'Fira Code', monospace;
+  --sans: 'Inter', sans-serif;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 1rem}
-body::before{content:'';position:fixed;top:-40%;left:-20%;width:60%;height:80%;background:radial-gradient(ellipse,rgba(124,111,255,.12) 0%,transparent 70%);pointer-events:none}
-body::after{content:'';position:fixed;bottom:-30%;right:-10%;width:50%;height:70%;background:radial-gradient(ellipse,rgba(167,139,250,.08) 0%,transparent 70%);pointer-events:none}
 
-.wrapper{width:100%;max-width:640px;position:relative;z-index:1}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+/* Efecto de malla de fondo */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 680px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Animaciones */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.screen { display: none; animation: slideUp 0.4s ease forwards; }
+.screen.active { display: block; }
+
+/* Tarjetas base con efecto Glassmorphism */
+.card {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
 
 /* ── INTRO ─────────────────────────────────── */
-.intro-header{text-align:center;margin-bottom:2.5rem}
-.chip{display:inline-block;padding:5px 14px;background:rgba(124,111,255,.15);border:1px solid rgba(124,111,255,.35);border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:1rem;font-family:var(--mono)}
-h1{font-size:clamp(28px,5vw,40px);font-weight:700;line-height:1.15;letter-spacing:-.02em}
-h1 span{color:var(--accent)}
-.subtitle{color:var(--muted);font-size:14px;margin-top:.75rem;line-height:1.6}
+.intro-header { text-align: center; margin-bottom: 2rem; }
+.chip {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid var(--accent);
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
 
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem}
+h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 700; line-height: 1.1; margin-bottom: 1rem; }
+h1 span { color: var(--accent); }
+.subtitle { color: var(--muted); font-size: 15px; line-height: 1.6; }
 
-.formula-strip{display:flex;flex-wrap:wrap;gap:10px;margin:1.5rem 0}
-.fml{background:rgba(124,111,255,.1);border:1px solid rgba(124,111,255,.25);border-radius:8px;padding:8px 14px;font-family:var(--mono);font-size:13px;color:var(--accent2)}
+.formula-strip { display: flex; flex-wrap: wrap; gap: 10px; margin: 1.5rem 0 2.5rem; justify-content: center; }
+.fml {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  transition: border 0.3s;
+}
+.fml:hover { border-color: var(--accent); }
 
-label.field-lbl{display:block;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-input[type=text]{width:100%;background:#0d0f1a;border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:15px;font-family:var(--sans);color:var(--text);outline:none;transition:border .2s}
-input[type=text]:focus{border-color:var(--accent)}
-input[type=text]::placeholder{color:#3d4260}
+label.field-lbl { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+input[type=text] {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-family: var(--sans);
+  color: var(--text);
+  outline: none;
+  transition: all 0.3s;
+}
+input[type=text]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.err { color: var(--red); font-size: 13px; margin-top: 8px; display: none; }
 
-.err{color:var(--red);font-size:13px;margin-top:6px;display:none}
-
-.btn{display:block;width:100%;padding:14px;margin-top:1.5rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;font-family:var(--sans);cursor:pointer;letter-spacing:.01em;transition:background .2s,transform .1s}
-.btn:hover{background:#6a5cfc}
-.btn:active{transform:scale(.98)}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
-.btn-ghost:hover{background:var(--surface);color:var(--text)}
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  margin-top: 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
+.btn:active { transform: translateY(0); }
+.btn-ghost { background: transparent; border: 1px solid var(--card-border); color: var(--text); }
+.btn-ghost:hover { background: rgba(255,255,255,0.05); transform: none; box-shadow: none; }
 
 /* ── QUIZ ───────────────────────────────────── */
-.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.q-counter{font-family:var(--mono);font-size:12px;color:var(--muted)}
-.q-name-tag{font-size:12px;font-weight:600;color:var(--accent2);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);padding:4px 12px;border-radius:99px}
+.quiz-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.q-counter { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.q-name-tag { font-size: 13px; font-weight: 500; color: #c4b5fd; display: flex; align-items: center; gap: 6px; }
 
-.progress{height:4px;background:var(--border);border-radius:2px;margin-bottom:1.5rem;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .4s ease}
+.progress { height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 3px; margin-bottom: 2rem; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 10px var(--accent-glow); }
 
-.q-badge{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--accent2);background:rgba(124,111,255,.1);border:1px solid rgba(124,111,255,.25);padding:3px 10px;border-radius:6px;display:inline-block;margin-bottom:12px}
+.q-badge { font-family: var(--mono); font-size: 11px; font-weight: 500; color: #c4b5fd; background: rgba(139, 92, 246, 0.15); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 12px; }
+.q-text { font-size: 18px; font-weight: 500; line-height: 1.6; margin-bottom: 12px; }
 
-.q-text{font-size:16px;font-weight:500;line-height:1.65;margin-bottom:8px}
+.q-formula { background: rgba(139, 92, 246, 0.05); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 12px 16px; font-family: var(--mono); font-size: 14px; color: #c4b5fd; margin-bottom: 20px; }
 
-.q-formula{background:rgba(124,111,255,.08);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-family:var(--mono);font-size:13px;color:var(--accent2);margin:10px 0}
+.opts { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+.opt { display: flex; align-items: flex-start; gap: 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px 18px; cursor: pointer; transition: all 0.2s; font-size: 15px; line-height: 1.5; }
+.opt:hover { border-color: var(--accent); background: rgba(139, 92, 246, 0.05); }
+.opt-letter { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--muted); background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 6px; min-width: 28px; text-align: center; }
 
-.opts{display:flex;flex-direction:column;gap:8px;margin-top:14px}
-.opt{display:flex;align-items:flex-start;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;cursor:pointer;transition:border .2s,background .2s;font-size:14px;line-height:1.5}
-.opt:hover{border-color:rgba(124,111,255,.5);background:rgba(124,111,255,.05)}
-.opt-letter{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--muted);min-width:18px;margin-top:2px}
-.opt.correct{background:rgba(34,201,142,.08);border-color:var(--green);color:var(--green)}
-.opt.correct .opt-letter{color:var(--green)}
-.opt.wrong{background:rgba(240,96,128,.08);border-color:var(--red);color:var(--red)}
-.opt.wrong .opt-letter{color:var(--red)}
-.opt.show-correct{background:rgba(34,201,142,.06);border-color:var(--green);color:var(--green)}
-.opt.show-correct .opt-letter{color:var(--green)}
+/* Estados de las opciones */
+.opt.correct { background: var(--green-glow); border-color: var(--green); }
+.opt.correct .opt-letter { background: var(--green); color: #000; }
+.opt.wrong { background: var(--red-glow); border-color: var(--red); }
+.opt.wrong .opt-letter { background: var(--red); color: #fff; }
 
-.feedback{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.6;display:none}
-.feedback.ok{background:rgba(34,201,142,.08);border:1px solid rgba(34,201,142,.25);color:#7df5c4}
-.feedback.fail{background:rgba(240,96,128,.08);border:1px solid rgba(240,96,128,.25);color:#f9a0b5}
+.feedback { margin-top: 15px; padding: 14px 18px; border-radius: 12px; font-size: 14px; line-height: 1.6; display: none; animation: slideUp 0.3s; }
+.feedback.ok { background: var(--green-glow); border: 1px solid rgba(16, 185, 129, 0.3); color: #6ee7b7; }
+.feedback.fail { background: var(--red-glow); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; }
 
 /* ── RESULTS ─────────────────────────────────── */
-.result-header{text-align:center;margin-bottom:2rem}
-.score-ring{width:120px;height:120px;margin:0 auto 1.25rem;position:relative}
-.score-ring svg{transform:rotate(-90deg)}
-.score-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.score-text .big{font-size:28px;font-weight:700;color:var(--text)}
-.score-text .small{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.result-header { text-align: center; margin-bottom: 2.5rem; }
+.score-ring { width: 140px; height: 140px; margin: 0 auto 1.5rem; position: relative; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.score-text .big { font-size: 32px; font-weight: 700; color: var(--text); }
+.score-text .small { font-size: 12px; color: var(--muted); font-family: var(--mono); }
 
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
-.stat-val{font-size:22px;font-weight:700;color:var(--accent2)}
-.stat-lbl{font-size:11px;color:var(--muted);margin-top:4px;font-family:var(--mono)}
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2rem; }
+.stat { background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 14px; padding: 1.2rem; text-align: center; }
+.stat-val { font-size: 26px; font-weight: 700; color: #c4b5fd; margin-bottom: 4px; }
+.stat-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-family: var(--mono); }
 
-.review-title{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.review-item{border-left:3px solid;border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:8px;font-size:13px;line-height:1.6}
-.review-item.ok{border-color:var(--green);background:rgba(34,201,142,.06)}
-.review-item.fail{border-color:var(--red);background:rgba(240,96,128,.06)}
-.review-item b{display:block;margin-bottom:4px;font-size:13px;font-weight:500;color:var(--text)}
-.review-item .note{color:var(--muted);font-size:12px}
-.review-item.fail .correct-ans{color:#7df5c4;font-size:12px;margin-top:2px}
+.review-title { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+.review-title::after { content: ''; flex: 1; height: 1px; background: var(--card-border); }
 
-.screen{display:none}
-.screen.active{display:block}
+.review-item { border-left: 4px solid; border-radius: 0 12px 12px 0; padding: 14px 18px; margin-bottom: 10px; background: rgba(255,255,255,0.02); }
+.review-item.ok { border-color: var(--green); }
+.review-item.fail { border-color: var(--red); }
+.review-item b { display: block; margin-bottom: 6px; font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.review-item .note { color: var(--muted); font-size: 13px; line-height: 1.6; }
+.review-item.fail .correct-ans { color: #6ee7b7; font-size: 13px; margin-top: 4px; display: block; font-weight: 500; }
+
+@media (max-width: 480px) {
+  .card { padding: 1.5rem; }
+  .stats-grid { gap: 8px; }
+  .stat { padding: 1rem 0.5rem; }
+  .stat-val { font-size: 20px; }
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
 
-<!-- INTRO -->
 <div id="s-intro" class="screen active">
   <div class="intro-header">
-    <div class="chip">Física · MRU</div>
-    <h1>Cuestionario<br><span>Movimiento Rectilíneo</span><br>Uniforme</h1>
-    <p class="subtitle">20 preguntas · Conceptos y fórmulas · Con clave de respuestas</p>
+    <div class="chip">Física · Análisis del Movimiento</div>
+    <h1>Cuestionario Avanzado<br><span>MRU</span></h1>
+    <p class="subtitle">20 preguntas · Gráficas, encuentros y acústica</p>
   </div>
   <div class="card">
     <div class="formula-strip">
       <div class="fml">d = v · t</div>
-      <div class="fml">v = d / t</div>
-      <div class="fml">t = d / v</div>
-      <div class="fml">v(m/s) = km/h ÷ 3.6</div>
+      <div class="fml">x(t) = x₀ + v·t</div>
+      <div class="fml">t_encuentro = d / (v₁ + v₂)</div>
     </div>
-    <label class="field-lbl">Tu nombre</label>
-    <input id="name-input" type="text" placeholder="Escribe tu nombre completo..." autocomplete="off">
-    <p id="name-err" class="err">Por favor escribe tu nombre antes de continuar.</p>
-    <button class="btn" onclick="startQuiz()">Comenzar cuestionario →</button>
+    <label class="field-lbl">Identificación del Estudiante</label>
+    <input id="name-input" type="text" placeholder="Ingresa tu nombre completo..." autocomplete="off">
+    <p id="name-err" class="err">⚠ Requerido para iniciar la prueba.</p>
+    <button class="btn" onclick="startQuiz()">Iniciar Evaluación →</button>
   </div>
 </div>
 
-<!-- QUIZ -->
 <div id="s-quiz" class="screen">
   <div class="quiz-top">
     <span class="q-counter" id="q-counter">Pregunta 1 de 20</span>
-    <span class="q-name-tag" id="q-nametag"></span>
+    <span class="q-name-tag" id="q-nametag">👤 Estudiante</span>
   </div>
   <div class="progress"><div class="progress-fill" id="prog" style="width:0%"></div></div>
   <div class="card">
@@ -143,36 +241,36 @@ input[type=text]::placeholder{color:#3d4260}
     <div id="q-formula" class="q-formula" style="display:none"></div>
     <div class="opts" id="q-opts"></div>
     <div id="q-feedback" class="feedback"></div>
-    <button class="btn" id="btn-next" style="display:none;margin-top:1.25rem" onclick="nextQ()">Siguiente →</button>
+    <button class="btn" id="btn-next" style="display:none;" onclick="nextQ()">Siguiente Pregunta →</button>
   </div>
 </div>
 
-<!-- RESULTS -->
 <div id="s-result" class="screen">
-  <div class="card" style="margin-bottom:1rem">
+  <div class="card" style="margin-bottom: 1.5rem">
     <div class="result-header">
       <div class="score-ring">
-        <svg viewBox="0 0 120 120" width="120" height="120">
-          <circle cx="60" cy="60" r="52" fill="none" stroke="#1c2033" stroke-width="10"/>
-          <circle id="ring-circle" cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+        <svg viewBox="0 0 140 140" width="140" height="140">
+          <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="12"/>
+          <circle id="ring-circle" cx="70" cy="70" r="60" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" style="transition: stroke-dashoffset 1s ease-out, stroke 0.5s;"/>
         </svg>
         <div class="score-text">
           <span class="big" id="res-pct">0%</span>
-          <span class="small">puntuación</span>
+          <span class="small">precisión</span>
         </div>
       </div>
-      <h2 style="font-size:20px;font-weight:600" id="res-grade-txt"></h2>
-      <p id="res-name-txt" style="color:var(--muted);font-size:13px;margin-top:4px"></p>
+      <h2 style="font-size: 22px; font-weight: 600; margin-bottom: 4px;" id="res-grade-txt"></h2>
+      <p id="res-name-txt" style="color: var(--muted); font-size: 14px;"></p>
     </div>
     <div class="stats-grid">
-      <div class="stat"><div class="stat-val" id="res-correct"></div><div class="stat-lbl">correctas</div></div>
-      <div class="stat"><div class="stat-val" id="res-wrong"></div><div class="stat-lbl">incorrectas</div></div>
-      <div class="stat"><div class="stat-val">20</div><div class="stat-lbl">total</div></div>
+      <div class="stat"><div class="stat-val" id="res-correct" style="color: var(--green);"></div><div class="stat-lbl">Aciertos</div></div>
+      <div class="stat"><div class="stat-val" id="res-wrong" style="color: var(--red);"></div><div class="stat-lbl">Fallos</div></div>
+      <div class="stat"><div class="stat-val">20</div><div class="stat-lbl">Total</div></div>
     </div>
-    <button class="btn btn-ghost" onclick="restart()">Reiniciar cuestionario</button>
+    <button class="btn btn-ghost" onclick="restart()">Intentar de nuevo</button>
   </div>
+  
   <div class="card">
-    <p class="review-title">Revisión de respuestas</p>
+    <p class="review-title">Retroalimentación Detallada</p>
     <div id="review-list"></div>
   </div>
 </div>
@@ -180,116 +278,151 @@ input[type=text]::placeholder{color:#3d4260}
 </div>
 
 <script>
-const Qs=[
-  {t:"¿Qué es el Movimiento Rectilíneo Uniforme (MRU)?",f:null,opts:["Movimiento con aceleración constante","Movimiento en línea recta con velocidad constante","Movimiento circular uniforme","Movimiento con velocidad variable"],ans:1,exp:"En el MRU el objeto se desplaza en línea recta con velocidad constante, es decir, sin aceleración."},
-  {t:"¿Cuál es la fórmula principal del MRU?",f:"d = v · t",opts:["d = ½·a·t²","d = v · t","v = v₀ + a·t","d = v² / 2a"],ans:1,exp:"La fórmula fundamental es d = v·t, donde d es distancia, v es velocidad constante y t es el tiempo."},
-  {t:"Un auto recorre 150 km en 3 horas a velocidad constante. ¿Cuál es su velocidad?",f:"v = d / t",opts:["45 km/h","50 km/h","60 km/h","75 km/h"],ans:1,exp:"v = 150 km ÷ 3 h = 50 km/h."},
-  {t:"¿Cuál es la aceleración en el MRU?",f:null,opts:["Positiva","Negativa","Variable","Cero"],ans:3,exp:"La velocidad es constante, por lo tanto la aceleración es igual a cero."},
-  {t:"Un tren viaja a 80 km/h. ¿Qué distancia recorre en 2.5 horas?",f:"d = v · t",opts:["160 km","180 km","200 km","220 km"],ans:2,exp:"d = 80 × 2.5 = 200 km."},
-  {t:"¿Cómo es la gráfica posición–tiempo en el MRU?",f:null,opts:["Parábola","Línea recta","Curva exponencial","Hipérbola"],ans:1,exp:"Es una línea recta cuya pendiente representa la velocidad constante del móvil."},
-  {t:"Un ciclista recorre 90 m en 15 segundos. ¿A qué velocidad va?",f:"v = d / t",opts:["5 m/s","6 m/s","7 m/s","8 m/s"],ans:1,exp:"v = 90 m ÷ 15 s = 6 m/s."},
-  {t:"¿Qué representa la pendiente en una gráfica d–t del MRU?",f:null,opts:["La aceleración","La velocidad","La fuerza","La masa"],ans:1,exp:"La pendiente de la recta en la gráfica posición–tiempo equivale numéricamente a la velocidad."},
-  {t:"¿En cuánto tiempo un vehículo a 20 m/s recorre 500 m?",f:"t = d / v",opts:["20 s","25 s","30 s","35 s"],ans:1,exp:"t = 500 m ÷ 20 m/s = 25 s."},
-  {t:"¿Cuál es la unidad SI de velocidad?",f:null,opts:["km/h","m/s²","m/s","N/m"],ans:2,exp:"La unidad del Sistema Internacional para velocidad es el metro por segundo (m/s)."},
-  {t:"Si duplicas la velocidad manteniendo el tiempo constante, ¿qué ocurre con la distancia?",f:"d = v · t",opts:["Se mantiene igual","Se reduce a la mitad","Se duplica","Se cuadruplica"],ans:2,exp:"d = 2v·t = 2(v·t), la distancia también se duplica."},
-  {t:"Un cohete experimental viaja a 2 km/s. ¿Cuántos km recorre en 45 segundos?",f:"d = v · t",opts:["80 km","90 km","100 km","110 km"],ans:1,exp:"d = 2 km/s × 45 s = 90 km."},
-  {t:"¿Qué ocurre con el tiempo si la velocidad se triplica y la distancia es constante?",f:"t = d / v",opts:["Se triplica","Se reduce a la tercera parte","Permanece igual","Se duplica"],ans:1,exp:"t = d / (3v) = (1/3)·(d/v). El tiempo se reduce a la tercera parte."},
-  {t:"¿Cuál NO es una característica del MRU?",f:null,opts:["Velocidad constante","Trayectoria rectilínea","Aceleración nula","Fuerza neta no nula"],ans:3,exp:"En el MRU la aceleración es cero, lo que por la 2.ª ley de Newton implica que la fuerza neta también es cero."},
-  {t:"Un atleta corre 400 m en 50 s. ¿Cuánto tarda en correr 1 km a la misma velocidad?",f:"v = 400/50 = 8 m/s → t = d/v",opts:["100 s","115 s","125 s","130 s"],ans:2,exp:"v = 8 m/s; t = 1000 m ÷ 8 m/s = 125 s."},
-  {t:"Convierte 72 km/h a m/s.",f:"v (m/s) = v (km/h) ÷ 3.6",opts:["18 m/s","20 m/s","22 m/s","25 m/s"],ans:1,exp:"72 ÷ 3.6 = 20 m/s."},
-  {t:"Auto A va a 60 km/h y Auto B a 90 km/h en la misma dirección. ¿Cuánto tiempo tarda B en aventajar 30 km a A?",f:"Δd = (v_B – v_A) · t",opts:["1 h","1.5 h","2 h","0.5 h"],ans:0,exp:"Velocidad relativa = 90 – 60 = 30 km/h; t = 30 km ÷ 30 km/h = 1 h."},
-  {t:"Un móvil va 4 m/s durante 10 s y luego 6 m/s durante 5 s. ¿Cuál es la distancia total?",f:"d_total = d₁ + d₂",opts:["60 m","70 m","75 m","80 m"],ans:1,exp:"d₁ = 4×10 = 40 m; d₂ = 6×5 = 30 m; total = 70 m."},
-  {t:"Un tren de 200 m pasa completamente por un poste en 10 s. ¿A qué velocidad viaja?",f:"v = longitud / t",opts:["15 m/s","20 m/s","25 m/s","30 m/s"],ans:1,exp:"v = 200 m ÷ 10 s = 20 m/s."},
-  {t:"Un avión vuela a 900 km/h. ¿Cuántas horas necesita para recorrer 4 500 km?",f:"t = d / v",opts:["4 h","4.5 h","5 h","5.5 h"],ans:2,exp:"t = 4 500 ÷ 900 = 5 horas."}
+// Nuevo banco de preguntas (Análisis, encuentros, conversiones, gráficas y eco)
+const Qs = [
+  {t: "Si la gráfica de posición vs. tiempo (x-t) es una línea horizontal, ¿qué significa físicamente?", f: null, opts: ["El objeto viaja a velocidad constante alta", "El objeto está acelerando", "El objeto está en reposo (v = 0)", "El objeto retrocede constantemente"], ans: 2, exp: "Una línea horizontal indica que la posición no cambia al transcurrir el tiempo, es decir, el objeto está quieto o en reposo."},
+  {t: "En una gráfica de velocidad vs. tiempo (v-t) para un MRU, ¿qué representa el área bajo la recta?", f: "Área = base × altura", opts: ["La aceleración del objeto", "La distancia recorrida (desplazamiento)", "El tiempo total del trayecto", "La posición inicial del objeto"], ans: 1, exp: "El área del rectángulo formado (v × t) equivale matemáticamente a la distancia recorrida en ese intervalo de tiempo."},
+  {t: "¿Puede un objeto tener un Movimiento Rectilíneo Uniforme si se mueve en una trayectoria curva a 50 km/h todo el tiempo?", f: null, opts: ["Sí, porque su rapidez se mantiene constante", "No, porque al cambiar de dirección la velocidad ya no es constante", "Sí, siempre y cuando no haya fricción", "Depende de la masa del objeto"], ans: 1, exp: "La velocidad es un vector. Si la dirección cambia (trayectoria curva), la velocidad cambia, por lo que deja de ser Uniforme y Rectilíneo."},
+  {t: "Un tren de 100 m de longitud entra a un túnel de 300 m a una velocidad de 20 m/s. ¿Cuánto tiempo tarda en cruzarlo completamente?", f: "t = (L_tren + L_túnel) / v", opts: ["15 s", "20 s", "10 s", "5 s"], ans: 1, exp: "Para cruzar por completo, la cola del tren debe salir del túnel. La distancia total a recorrer es 100m + 300m = 400m. t = 400/20 = 20 s."},
+  {t: "Una persona grita frente a una montaña y escucha el eco 4 segundos después. Si la velocidad del sonido es 340 m/s, ¿a qué distancia está la montaña?", f: "d = (v · t_total) / 2", opts: ["1360 m", "680 m", "340 m", "2720 m"], ans: 1, exp: "El sonido viaja de ida y de vuelta (2d). La distancia total del sonido es 340 × 4 = 1360 m. Por tanto, la montaña está a la mitad: 680 m."},
+  {t: "Un auto viaja con la ecuación de posición x(t) = 15 + 4t (en unidades del SI). ¿Cuál es su posición inicial y su velocidad?", f: "Ecuación de itinerario: x(t) = x₀ + v·t", opts: ["x₀ = 4 m, v = 15 m/s", "x₀ = 15 m, v = 4 m/s", "x₀ = 0 m, v = 19 m/s", "x₀ = 15 m, v = 15 m/s"], ans: 1, exp: "Comparando con la fórmula general, el término independiente (15) es la posición inicial y el coeficiente que acompaña a 't' (4) es la velocidad constante."},
+  {t: "Dos autos, A y B, están separados por 400 km y se dirigen a su encuentro simultáneamente. A va a 60 km/h y B a 40 km/h. ¿En cuánto tiempo se encontrarán?", f: "t_encuentro = d / (v_A + v_B)", opts: ["2 horas", "3 horas", "4 horas", "5 horas"], ans: 2, exp: "Se acercan mutuamente, así que sus velocidades se suman (60 + 40 = 100 km/h). El tiempo es t = 400 km ÷ 100 km/h = 4 horas."},
+  {t: "Un ciclista va a 36 km/h. ¿Cuántos metros recorre en exactamente 10 segundos?", f: "Factor de conversión: ÷ 3.6", opts: ["100 m", "360 m", "10 m", "36 m"], ans: 0, exp: "Primero convertimos al SI: 36 km/h ÷ 3.6 = 10 m/s. Luego calculamos la distancia: d = 10 m/s × 10 s = 100 m."},
+  {t: "Un ladrón escapa a 8 m/s. A los 5 segundos, un policía sale en su persecución a 10 m/s. ¿En cuánto tiempo (desde que sale el policía) lo alcanza?", f: "t_alcance = d_separación / (v_P - v_L)", opts: ["15 s", "20 s", "25 s", "40 s"], ans: 1, exp: "El ladrón sacó una ventaja de 40 m (8 m/s × 5s). La velocidad relativa con la que el policía recorta distancia es 10 - 8 = 2 m/s. t = 40 / 2 = 20 s."},
+  {t: "¿Qué significa físicamente que la pendiente de una recta en una gráfica posición vs. tiempo (x-t) sea negativa?", f: null, opts: ["El objeto está frenando", "El objeto se mueve en sentido contrario al sistema de referencia", "El tiempo retrocede", "La aceleración es constante y negativa"], ans: 1, exp: "La pendiente es la velocidad. Una pendiente negativa indica una velocidad negativa, es decir, el móvil regresa hacia el origen o va en sentido contrario a nuestro eje positivo."},
+  {t: "Se ve un relámpago y 3 segundos después se oye el trueno. Si v_sonido = 340 m/s y v_luz ≈ 300,000 km/s, ¿a qué distancia aproximada cayó el rayo?", f: "d ≈ v_sonido · t", opts: ["1020 m", "340 m", "680 m", "85 m"], ans: 0, exp: "El tiempo que tarda la luz en llegar es despreciable. Solo usamos el sonido: d = 340 m/s × 3 s = 1020 m."},
+  {t: "Si caminas a 1.5 m/s dentro de un tren hacia la locomotora (el tren viaja a 15 m/s), ¿cuál es tu velocidad respecto a un observador en la estación?", f: "v_relativa = v_tren + v_persona", opts: ["13.5 m/s", "15.0 m/s", "16.5 m/s", "1.5 m/s"], ans: 2, exp: "Como ambos movimientos tienen la misma dirección y sentido, para el observador exterior las velocidades se suman: 15 + 1.5 = 16.5 m/s."},
+  {t: "Un auto recorre 120 km a 40 km/h y luego otros 120 km a 60 km/h. ¿Cuál es su rapidez media en todo el trayecto completo?", f: "v_media = d_total / t_total", opts: ["50 km/h", "48 km/h", "55 km/h", "45 km/h"], ans: 1, exp: "Tramo 1 tarda 3h (120/40) y Tramo 2 tarda 2h (120/60). Tiempo total = 5h. Distancia total = 240 km. v_media = 240 / 5 = 48 km/h."},
+  {t: "Convierte rápidamente 15 m/s a km/h.", f: "v (km/h) = v (m/s) × 3.6", opts: ["36 km/h", "45 km/h", "54 km/h", "60 km/h"], ans: 2, exp: "Para pasar de m/s a km/h se multiplica por 3.6. Por lo tanto, 15 × 3.6 = 54 km/h."},
+  {t: "La diferencia fundamental entre 'velocidad' y 'rapidez' en la cinemática es:", f: null, opts: ["La rapidez se mide en km/h y la velocidad siempre en m/s", "La velocidad es un vector (posee dirección) y la rapidez es un escalar", "Son sinónimos exactos en cualquier rama de la física", "La rapidez siempre es un valor mayor a la velocidad"], ans: 1, exp: "La rapidez solo indica la magnitud (qué tan rápido se mueve), mientras que la velocidad indica la magnitud y también la dirección y sentido del movimiento."},
+  {t: "Un corredor da una vuelta completa a una pista circular de 400 m en 50 s. ¿Cuál es su velocidad media en ese intervalo?", f: "v_media = desplazamiento neta / t", opts: ["8 m/s", "4 m/s", "0 m/s", "40 m/s"], ans: 2, exp: "Al dar la vuelta y regresar exactamente al punto de inicio, su desplazamiento neto es 0 metros. Como la velocidad media es desplazamiento sobre tiempo (0 / 50), el resultado es 0 m/s."},
+  {t: "Un barco navega a velocidad constante. En la primera hora recorre 25 km. ¿Cuántos km recorrerá en 30 minutos más?", f: "Regla de tres o d = v · t", opts: ["12.5 km", "25 km", "50 km", "75 km"], ans: 0, exp: "Su velocidad es 25 km/h. Como 30 minutos son 0.5 horas, la distancia será 25 × 0.5 = 12.5 km."},
+  {t: "¿Qué sucede con la distancia recorrida por un móvil en MRU si el tiempo transcurrido se triplica (manteniendo la misma velocidad)?", f: null, opts: ["Se reduce a la tercera parte", "Se mantiene exactamente igual", "Se duplica", "Se triplica"], ans: 3, exp: "En el MRU, la distancia es directamente proporcional al tiempo (d = v·t). Si t se triplica, d forzosamente se triplica."},
+  {t: "Un satélite orbita a una rapidez constante de 7000 m/s alrededor de la Tierra. ¿Es este un ejemplo de MRU?", f: null, opts: ["Sí, porque la rapidez no cambia en ningún momento", "No, porque al ser una órbita cambia de dirección y existe aceleración centrípeta", "Sí, porque en el espacio no existe fricción", "No, porque su rapidez es demasiado alta para considerarse uniforme"], ans: 1, exp: "Aunque la rapidez sea constante, la trayectoria es circular. Al cambiar la dirección constantemente, existe una aceleración (centrípeta), violando el principio del MRU."},
+  {t: "El sonido viaja en el agua a aprox. 1500 m/s. ¿Cuánto tarda el sonar de un submarino en recibir el eco si el fondo marino está a 3000 m de profundidad?", f: "t = 2d / v", opts: ["2 s", "4 s", "1 s", "3 s"], ans: 1, exp: "La onda de sonido debe bajar (3000 m) y luego subir (3000 m). Distancia total = 6000 m. t = 6000 / 1500 = 4 s."}
 ];
 
-const LETTERS=['A','B','C','D'];
-let cur=0,score=0,answers=[],uName='';
+const LETTERS = ['A', 'B', 'C', 'D'];
+let cur = 0, score = 0, answers = [], uName = '';
 
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-function startQuiz(){
-  const n=document.getElementById('name-input').value.trim();
-  if(!n){document.getElementById('name-err').style.display='block';return;}
-  document.getElementById('name-err').style.display='none';
-  uName=n;cur=0;score=0;answers=[];
+function startQuiz() {
+  const n = document.getElementById('name-input').value.trim();
+  if (!n) { document.getElementById('name-err').style.display = 'block'; return; }
+  document.getElementById('name-err').style.display = 'none';
+  uName = n; cur = 0; score = 0; answers = [];
+  document.getElementById('q-nametag').innerHTML = `👤 ${uName}`;
   showScreen('s-quiz');
-  document.getElementById('q-nametag').textContent=uName;
   renderQ();
 }
 
-function renderQ(){
-  const q=Qs[cur];
-  document.getElementById('q-counter').textContent=`Pregunta ${cur+1} de ${Qs.length}`;
-  document.getElementById('prog').style.width=((cur/Qs.length)*100)+'%';
-  document.getElementById('q-badge-wrap').innerHTML=q.f?'<div class="q-badge">Pregunta con fórmula</div>':'';
-  document.getElementById('q-text').textContent=q.t;
-  const fEl=document.getElementById('q-formula');
-  if(q.f){fEl.innerHTML='<b>Fórmula:</b> '+q.f;fEl.style.display='block';}else{fEl.style.display='none';}
-  document.getElementById('q-feedback').style.display='none';
-  document.getElementById('q-feedback').className='feedback';
-  document.getElementById('btn-next').style.display='none';
-  const optsEl=document.getElementById('q-opts');
-  optsEl.innerHTML='';
-  q.opts.forEach((o,i)=>{
-    const d=document.createElement('div');
-    d.className='opt';
-    d.innerHTML=`<span class="opt-letter">${LETTERS[i]}</span><span>${o}</span>`;
-    d.addEventListener('click',()=>selectOpt(i));
+function renderQ() {
+  const q = Qs[cur];
+  document.getElementById('q-counter').textContent = `Pregunta ${cur + 1} de ${Qs.length}`;
+  document.getElementById('prog').style.width = ((cur / Qs.length) * 100) + '%';
+  document.getElementById('q-badge-wrap').innerHTML = q.f ? '<div class="q-badge">💡 Tiene fórmula / Pista</div>' : '';
+  document.getElementById('q-text').textContent = q.t;
+  
+  const fEl = document.getElementById('q-formula');
+  if (q.f) {
+    fEl.innerHTML = `<strong>Dato:</strong> ${q.f}`;
+    fEl.style.display = 'block';
+  } else {
+    fEl.style.display = 'none';
+  }
+  
+  const fb = document.getElementById('q-feedback');
+  fb.style.display = 'none';
+  fb.className = 'feedback';
+  
+  document.getElementById('btn-next').style.display = 'none';
+  const optsEl = document.getElementById('q-opts');
+  optsEl.innerHTML = '';
+  
+  q.opts.forEach((o, i) => {
+    const d = document.createElement('div');
+    d.className = 'opt';
+    d.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span>${o}</span>`;
+    d.addEventListener('click', () => selectOpt(i));
     optsEl.appendChild(d);
   });
 }
 
-function selectOpt(i){
-  const q=Qs[cur];
-  const opts=document.querySelectorAll('.opt');
-  opts.forEach(o=>o.style.pointerEvents='none');
-  const correct=i===q.ans;
-  if(correct)score++;
-  answers.push({q:q.t,chosen:i,correct,exp:q.exp,correctLabel:q.opts[q.ans],chosenLabel:q.opts[i]});
-  opts.forEach((o,idx)=>{
-    if(idx===q.ans)o.classList.add('correct');
-    else if(idx===i&&!correct)o.classList.add('wrong');
+function selectOpt(i) {
+  const q = Qs[cur];
+  const opts = document.querySelectorAll('.opt');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  
+  const correct = (i === q.ans);
+  if (correct) score++;
+  answers.push({q: q.t, chosen: i, correct, exp: q.exp, correctLabel: q.opts[q.ans], chosenLabel: q.opts[i]});
+  
+  opts.forEach((o, idx) => {
+    if (idx === q.ans) o.classList.add('correct');
+    else if (idx === i && !correct) o.classList.add('wrong');
   });
-  const fb=document.getElementById('q-feedback');
-  fb.classList.add(correct?'ok':'fail');
-  fb.innerHTML=(correct?'<b>✓ Correcto.</b> ':'<b>✗ Incorrecto.</b> ')+q.exp;
-  fb.style.display='block';
-  const btn=document.getElementById('btn-next');
-  btn.style.display='block';
-  btn.textContent=cur<Qs.length-1?'Siguiente →':'Ver resultados';
+  
+  const fb = document.getElementById('q-feedback');
+  fb.classList.add(correct ? 'ok' : 'fail');
+  fb.innerHTML = (correct ? '<b>✓ Respuesta Correcta.</b><br>' : '<b>✗ Respuesta Incorrecta.</b><br>') + q.exp;
+  fb.style.display = 'block';
+  
+  const btn = document.getElementById('btn-next');
+  btn.style.display = 'block';
+  btn.textContent = cur < Qs.length - 1 ? 'Siguiente Pregunta →' : 'Ver Resultados Finales';
 }
 
-function nextQ(){cur++;cur<Qs.length?renderQ():showResults();}
+function nextQ() {
+  cur++;
+  cur < Qs.length ? renderQ() : showResults();
+}
 
-function showResults(){
+function showResults() {
   showScreen('s-result');
-  const pct=Math.round((score/Qs.length)*100);
-  document.getElementById('res-pct').textContent=pct+'%';
-  document.getElementById('res-correct').textContent=score;
-  document.getElementById('res-wrong').textContent=Qs.length-score;
-  document.getElementById('res-name-txt').textContent='Estudiante: '+uName;
-  let grade='';
-  if(pct>=90)grade='Excelente dominio del MRU';
-  else if(pct>=75)grade='Buen desempeño';
-  else if(pct>=60)grade='Desempeño suficiente';
-  else grade='Necesita repasar el tema';
-  document.getElementById('res-grade-txt').textContent=grade;
-  const circ=document.getElementById('ring-circle');
-  const circum=326.7;
-  circ.style.strokeDashoffset=circum-(circum*pct/100);
-  circ.style.stroke=pct>=75?'var(--green)':pct>=60?'var(--accent)':'var(--red)';
-  const rev=document.getElementById('review-list');
-  rev.innerHTML='';
-  answers.forEach((a,i)=>{
-    const d=document.createElement('div');
-    d.className='review-item '+(a.correct?'ok':'fail');
-    d.innerHTML=`<b>${i+1}. ${a.q}</b>`+(a.correct?'<span class="note">✓ Respuesta correcta</span>':`<span class="correct-ans">Correcta: ${a.correctLabel}</span><span class="note">Tu respuesta: ${a.chosenLabel}</span>`)+`<span class="note" style="margin-top:4px;display:block">${a.exp}</span>`;
+  const pct = Math.round((score / Qs.length) * 100);
+  
+  document.getElementById('res-pct').textContent = pct + '%';
+  document.getElementById('res-correct').textContent = score;
+  document.getElementById('res-wrong').textContent = Qs.length - score;
+  document.getElementById('res-name-txt').textContent = `Evaluación de ${uName}`;
+  
+  let grade = '';
+  let ringColor = '';
+  if (pct >= 90) { grade = '🏆 ¡Excelente dominio analítico!'; ringColor = 'var(--green)'; }
+  else if (pct >= 70) { grade = '⭐ Muy buen razonamiento'; ringColor = '#3b82f6'; }
+  else if (pct >= 50) { grade = '👍 Desempeño aceptable'; ringColor = 'var(--accent)'; }
+  else { grade = '📚 Necesitas repasar los conceptos'; ringColor = 'var(--red)'; }
+  
+  document.getElementById('res-grade-txt').textContent = grade;
+  
+  // Animar anillo
+  setTimeout(() => {
+    const circ = document.getElementById('ring-circle');
+    const circum = 377; // 2 * pi * r (r=60)
+    circ.style.strokeDashoffset = circum - (circum * pct / 100);
+    circ.style.stroke = ringColor;
+  }, 100);
+  
+  const rev = document.getElementById('review-list');
+  rev.innerHTML = '';
+  answers.forEach((a, i) => {
+    const d = document.createElement('div');
+    d.className = 'review-item ' + (a.correct ? 'ok' : 'fail');
+    d.innerHTML = `<b>${i + 1}. ${a.q}</b>` + 
+      (a.correct ? `<span class="note" style="color:#6ee7b7">✓ ${a.chosenLabel}</span>` : `<span class="correct-ans">Correcta: ${a.correctLabel}</span><span class="note" style="color:#fca5a5">Tu respuesta: ${a.chosenLabel}</span>`) + 
+      `<span class="note" style="margin-top:8px; display:block; padding-top:8px; border-top:1px solid rgba(255,255,255,0.05)">${a.exp}</span>`;
     rev.appendChild(d);
   });
 }
 
-function restart(){document.getElementById('name-input').value='';showScreen('s-intro');}
+function restart() {
+  document.getElementById('name-input').value = '';
+  showScreen('s-intro');
+}
 </script>
 </body>
 </html>
